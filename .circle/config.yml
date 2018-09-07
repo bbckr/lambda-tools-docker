@@ -1,0 +1,56 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:17.05.0-ce-git
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/docker-image-cache.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/docker-image-cache.tar | true
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build --cache-from=lambda-deploy-tools -t lambda-deploy-tools ./docker
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/docker-image-cache.tar lambda-deploy-tools
+      - run:
+          name: "Tag and Push Docker image to Docker Hub"
+          command: |
+            if [ -z $CIRCLE_TAG ]; then
+              echo "No tags were pushed. Skip step."
+            else
+              docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
+              docker tag lambda-deploy-tools bckr/lambda-deploy-tools:latest
+              docker tag lambda-deploy-tools bckr/lambda-deploy-tools:$CIRCLE_TAG
+              docker push bckr/lambda-deploy-tools:$CIRCLE_TAG
+              docker push bckr/lambda-deploy-tools:latest
+            fi
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/docker-image-cache.tar
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
