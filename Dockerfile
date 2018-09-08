@@ -23,7 +23,6 @@ RUN apk update \
     && pip install --upgrade pip \
     && pip install --no-cache-dir \
       jinja2-cli[yaml] \
-      shyaml \
     && npm install -g serverless
 
 # Install terraform
