@@ -14,12 +14,15 @@ RUN apk update \
       python \
       gcc \
       py-virtualenv \
+      python2-dev \
+      musl-dev \
+      libffi-dev \
+      libressl-dev \
       nodejs \
       nodejs-npm \
     && pip install --upgrade pip \
     && pip install --no-cache-dir \
       jinja2-cli[yaml] \
-      shyaml \
     && npm install -g serverless
 
 # Install terraform
