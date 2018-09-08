@@ -7,6 +7,7 @@ ENV TERRAFORM_VERSION="0.11.8"
 RUN apk update \
     && apk add --no-cache \
       curl \
+      make \
       git \
       docker \ 
       py-pip \
