@@ -14,6 +14,10 @@ RUN apk update \
       python \
       gcc \
       py-virtualenv \
+      python2-dev \
+      musl-dev \
+      libffi-dev \
+      libressl-dev \
       nodejs \
       nodejs-npm \
     && pip install --upgrade pip \
