@@ -17,7 +17,8 @@ RUN apk update \
     && pip install --no-cache-dir \
       jinja2-cli[yaml] \
       shyaml \
-    && npm install -g serverless
+    && npm install -g serverless \
+    && serverless plugin install -n serverless-python-requirements
 
 # Install terraform
 RUN cd /tmp \
