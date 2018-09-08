@@ -12,6 +12,7 @@ RUN apk update \
       docker \ 
       py-pip \
       python \
+      py-virtualenv \
       nodejs \
       nodejs-npm \
     && pip install --upgrade pip \
