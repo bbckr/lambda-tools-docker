@@ -19,12 +19,12 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build --cache-from=lambda-deploy-tools -t lambda-deploy-tools .
+            docker build --cache-from=lambda-tools -t lambda-tools .
       - run:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/docker-image-cache.tar lambda-deploy-tools
+            docker save -o /caches/docker-image-cache.tar lambda-tools
       - run:
           name: "Tag and Push Docker image to Docker Hub"
           command: |
@@ -32,10 +32,10 @@ jobs:
               echo "No tags were pushed. Skip step."
             else
               docker login --username $DOCKERHUB_USERNAME --password $DOCKERHUB_PASSWORD
-              docker tag lambda-deploy-tools bckr/lambda-deploy-tools:latest
-              docker tag lambda-deploy-tools bckr/lambda-deploy-tools:$CIRCLE_TAG
-              docker push bckr/lambda-deploy-tools:$CIRCLE_TAG
-              docker push bckr/lambda-deploy-tools:latest
+              docker tag lambda-tools bckr/lambda-tools:latest
+              docker tag lambda-tools bckr/lambda-tools:$CIRCLE_TAG
+              docker push bckr/lambda-tools:$CIRCLE_TAG
+              docker push bckr/lambda-tools:latest
             fi
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
