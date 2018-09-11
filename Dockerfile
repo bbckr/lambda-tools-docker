@@ -11,10 +11,10 @@ RUN apk update \
       git \
       docker \ 
       py-pip \
-      python \
+      python3 \
       gcc \
       py-virtualenv \
-      python2-dev \
+      python3-dev \
       musl-dev \
       libffi-dev \
       libressl-dev \
